@@ -1,0 +1,10 @@
+# Dockerfile
+FROM postgres:14-alpine
+
+ENV POSTGRES_DB=products
+ENV POSTGRES_USER=user_products
+ENV POSTGRES_PASSWORD=Cl4v3_S3cret4
+
+COPY init.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432
