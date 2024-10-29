@@ -1,33 +1,33 @@
-# Use an official OpenJDK runtime as a parent image
+# Usar una imagen oficial de OpenJDK como imagen base
 FROM openjdk:17-jdk-slim
 
-# Set the working directory in the container
+# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Set environment variables
+# Establecer variables de entorno
 ENV DB_HOST=localhost
 ENV DB_PORT=5432
 ENV DB_NAME=products
 ENV DB_USERNAME=user_products
 ENV DB_PASSWORD=password
 
-# Copy the Gradle wrapper and build files from the ms_products directory
+# Copiar el wrapper de Gradle y los archivos de construcción desde el directorio ms_products
 COPY ../gradlew .
 COPY ../gradle gradle
 COPY ../build.gradle .
 COPY ../settings.gradle .
 
-# Copy the source code from the ms_products directory
+# Copiar el código fuente desde el directorio ms_products
 COPY ../src src
 
-# Grant execution rights to the Gradle wrapper
+# Otorgar permisos de ejecución al wrapper de Gradle
 RUN chmod +x gradlew
 
-# Build the application
+# Construir la aplicación
 RUN ./gradlew build
 
-# Expose the port the application runs on
+# Exponer el puerto en el que se ejecuta la aplicación
 EXPOSE 8080
 
-# Run the application
+# Ejecutar la aplicación
 CMD ["java", "-jar", "build/libs/ms_products-0.0.1-SNAPSHOT.jar"]
