@@ -14,3 +14,9 @@ Proyecto materia Integracion Continua B01 Poli
    docker ps 
    ```
 5. Cuando los contenedores de ms-products y db-products esten levantados se puede realizar peticones al API usando la colecón de postman proporcionada en la carpeta collections. [Enlace a la colección de Postman](./collections/MS_Products_IC.postman_collection) 
+
+
+# Se agregan los participantes del proyecto
+Colaboradores
+
+1. Jesús Manuel Lopez Mercado - 100317193
