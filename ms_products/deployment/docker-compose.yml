@@ -10,6 +10,8 @@ services:
       - "5433:5432"
     volumes:
       - products_data:/var/lib/postgresql/data
+    networks:
+      - productos-network
 
   ms-products:
     build:
@@ -26,6 +28,11 @@ services:
       - "8080:8080"
     depends_on:
       - db-products
+    networks:
+      - productos-network
 
 volumes:
   products_data:
+
+networks:
+  productos-network:
