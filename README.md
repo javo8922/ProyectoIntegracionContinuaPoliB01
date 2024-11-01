@@ -21,4 +21,4 @@ Proyecto materia Integracion Continua B01 Poli
 
 1. Jesús Manuel Lopez Mercado - 100317193
 2. Jorge Luis Velásquez Venegas - 100280146
-3. Millerlany Becerra Chavez - 100321912
+3. Millerlandy Becerra Chavez - 100321912
