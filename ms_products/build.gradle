@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'jacoco'
 }
 
 group = 'co.com.poli.products'
@@ -39,4 +40,18 @@ tasks.withType(JavaCompile) {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.jacocoTestReport {
+    dependsOn tasks.test
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir('jacocoHtml'))
+    }
 }
