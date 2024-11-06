@@ -24,3 +24,4 @@ Proyecto materia Integracion Continua B01 Poli
 3. Millerlandy Becerra Chavez - 100321912
 4. Yair Andrey Panqueva Prieto - 100252831
 5. Laura Camila Ortiz Fajardo - 1019147184
+6. Andres Felipe Pineda Obando - 100290906
