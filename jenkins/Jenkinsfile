@@ -51,12 +51,12 @@ pipeline {
     }
 
     post {
-        always {
-            cleanWs()
-        }
         success {
             archiveArtifacts artifacts: 'ms_products/build/reports/**', allowEmptyArchive: true
             junit 'ms_products/build/test-results/test/*.xml'
+        }
+        always {
+            cleanWs()
         }
     }
 }
