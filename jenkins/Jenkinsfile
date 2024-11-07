@@ -57,7 +57,7 @@ pipeline {
                 git config --global user.name "Jorge Velasquez"
                 git checkout dev
                 git pull origin dev
-                git merge --no-ff ${env.BRANCH_NAME}
+                git merge --no-ff feature/jorgev
                 git push origin dev
             '''
             cleanWs()
