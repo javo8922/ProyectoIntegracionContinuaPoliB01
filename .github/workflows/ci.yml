@@ -1,9 +1,9 @@
 name: CI Pipeline
 
 on:
-    push:
-        branches:
-            - feature/jorgev
+    # push:
+    #     branches:
+    #         - feature/jorgev
     pull_request:
         branches:
             - dev
