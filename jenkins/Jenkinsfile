@@ -51,6 +51,13 @@ pipeline {
         success {
             archiveArtifacts artifacts: 'ms_products/build/reports/**', allowEmptyArchive: true
             junit 'ms_products/build/test-results/test/*.xml'
+            echo 'Success - Creating Pull Request'
+            sh '''
+                git config --global user.email "jorgeluisvelasquezv@gmail.com"
+                git config --global user.name "Jorge Velasquez"
+                git checkout dev
+                git pull origin dev
+            '''
             cleanWs()
         }
         failure {
