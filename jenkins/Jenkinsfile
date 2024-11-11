@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/feature/jorgev']], userRemoteConfigs: [[url: 'https://github.com/javo8922/ProyectoIntegracionContinuaPoliB01']]])
+                checkout scm
             }
         }
 
@@ -45,15 +45,73 @@ pipeline {
                 jacoco execPattern: 'ms_products/build/jacoco/test.exec', classPattern: 'ms_products/build/classes/java/main', sourcePattern: 'ms_products/src/main/java', exclusionPattern: '**/Test*'
             }
         }
+
+        stage('Clean Up Existing Containers') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh '''
+                        docker compose down -v || true
+                        docker rm -f db-products || true
+                        docker rm -f ms-products || true
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+
+        stage('Wait for Services') {
+            steps {
+                script {
+                    sleep 120 // Esperar 2 minutos
+                }
+            }
+        }
+
+        stage('Run Acceptance Tests') {
+            steps {
+                dir('AcceptanceTest/ms_products') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean test -i'
+                }
+            }
+        }
+        
+        stage('Publish Cucumber Report') {
+            steps {
+                script {
+                    def cucumberReportExists = fileExists 'AcceptanceTest/ms_products/target/cucumber-html-reports'
+                    if (cucumberReportExists) {
+                        archiveArtifacts artifacts: 'AcceptanceTest/ms_products/target/cucumber-html-reports/**', allowEmptyArchive: true
+                        publishHTML(target: [
+                            reportDir: 'AcceptanceTest/ms_products/target/cucumber-html-reports',
+                            reportFiles: 'index.html',
+                            reportName: 'Cucumber HTML Report'
+                        ])
+                    } else {
+                        echo 'No Cucumber report found to archive.'
+                    }
+                }
+            }
+        }
+
+        stage('Tear Down') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh 'docker compose down -v'
+                }
+            }
+        }
     }
 
     post {
-        success {
-            archiveArtifacts artifacts: 'ms_products/build/reports/**', allowEmptyArchive: true
-            junit 'ms_products/build/test-results/test/*.xml'
-            cleanWs()
-        }
-        failure {
+        always {
             cleanWs()
         }
     }
