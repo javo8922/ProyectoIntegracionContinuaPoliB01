@@ -1,0 +1,118 @@
+pipeline {
+    agent any
+
+    environment {
+        GRADLE_OPTS = '-Dorg.gradle.daemon=false'
+        DB_USERNAME = 'user_products'
+        DB_PORT = '5433'
+        DB_NAME = 'products'
+        DB_HOST = 'localhost'
+        DB_PASSWORD = 'Cl4v3_S3cret4'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Grant execute permission for gradlew') {
+            steps {
+                dir('ms_products') {
+                    sh 'chmod +x gradlew'
+                }
+            }
+        }
+
+        stage('Runing Test And Generate Coverage Report') {
+            steps {
+                dir('ms_products') {
+                    sh '''
+                        export DB_USERNAME=${DB_USERNAME}
+                        export DB_PORT=${DB_PORT}
+                        export DB_NAME=${DB_NAME}
+                        export DB_HOST=${DB_HOST}
+                        export DB_PASSWORD=${DB_PASSWORD}
+                        ./gradlew jacocoTestReport
+                    '''
+                }
+            }
+        }
+
+        stage('Publish Coverage Report') {
+            steps {
+                jacoco execPattern: 'ms_products/build/jacoco/test.exec', classPattern: 'ms_products/build/classes/java/main', sourcePattern: 'ms_products/src/main/java', exclusionPattern: '**/Test*'
+            }
+        }
+
+        stage('Clean Up Existing Containers') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh '''
+                        docker compose down -v || true
+                        docker rm -f db-products || true
+                        docker rm -f ms-products || true
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh 'docker compose up -d'
+                }
+            }
+        }
+
+        stage('Wait for Services') {
+            steps {
+                script {
+                    sleep 120 // Esperar 2 minutos
+                }
+            }
+        }
+
+        stage('Run Acceptance Tests') {
+            steps {
+                dir('AcceptanceTest/ms_products') {
+                    sh 'chmod +x gradlew'
+                    sh './gradlew clean test -i'
+                }
+            }
+        }
+        
+        stage('Publish Cucumber Report') {
+            steps {
+                script {
+                    def cucumberReportExists = fileExists 'AcceptanceTest/ms_products/target/cucumber-html-reports'
+                    if (cucumberReportExists) {
+                        archiveArtifacts artifacts: 'AcceptanceTest/ms_products/target/cucumber-html-reports/**', allowEmptyArchive: true
+                        publishHTML(target: [
+                            reportDir: 'AcceptanceTest/ms_products/target/cucumber-html-reports',
+                            reportFiles: 'index.html',
+                            reportName: 'Cucumber HTML Report'
+                        ])
+                    } else {
+                        echo 'No Cucumber report found to archive.'
+                    }
+                }
+            }
+        }
+
+        stage('Tear Down') {
+            steps {
+                dir('ms_products/deployment') {
+                    sh 'docker compose down -v'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
