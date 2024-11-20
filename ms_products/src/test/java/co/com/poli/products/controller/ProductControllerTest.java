@@ -150,7 +150,8 @@ class ProductControllerTest {
         product.setPrice(10.99);
         product.setQuantity(100L);
 
-        when(productService.createProduct(product)).thenReturn(Mono.empty());
+        when(productService.createProduct(product))
+                .thenReturn(Mono.error(new IllegalArgumentException("Invalid product")));
 
         webTestClient.post()
                 .uri("/api/v1/products")
@@ -158,7 +159,7 @@ class ProductControllerTest {
                 .exchange()
                 .expectStatus()
                 .isBadRequest()
-                .expectBody(ErrorResponse.class);
+                .expectBody(IllegalArgumentException.class);
     }
 
     @Test
