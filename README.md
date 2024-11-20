@@ -3,7 +3,7 @@ Proyecto materia Integracion Continua B01 Poli
 
 ## Depliegue en local
 
-1. Requisitos: Docker y docker-compose 
+1. Requisitos: Docker y docker-compose
 2. Abrir el proyecto en una consola o terminal navegar a la ruta ```/ms_products/deployment```
 3. Ejecutar el comando
    ```
