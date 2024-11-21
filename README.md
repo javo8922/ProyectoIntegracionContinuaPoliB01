@@ -9,7 +9,7 @@ Proyecto materia Integracion Continua B01 Poli
    ```
    docker-compose up -d 
    ```
-4. Validar que los contenedores ms-products y db-products esten levantados con el comando 
+4. Validar que los contenedores ms-products y db-products esten levantados con el comando
    ```
    docker ps 
    ```
