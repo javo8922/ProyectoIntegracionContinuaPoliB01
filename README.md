@@ -21,4 +21,7 @@ Proyecto materia Integracion Continua B01 Poli
 
 1. Jesús Manuel Lopez Mercado - 100317193
 2. Jorge Luis Velásquez Venegas - 100280146
-3. Yair Andrey Panqueva Prieto - 
+3. Millerlandy Becerra Chavez - 100321912
+4. Yair Andrey Panqueva Prieto - 100252831
+5. Laura Camila Ortiz Fajardo - 1019147184
+6. Andres Felipe Pineda Obando - 100290906
