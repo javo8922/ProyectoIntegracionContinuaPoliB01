@@ -3,13 +3,13 @@ Proyecto materia Integracion Continua B01 Poli
 
 ## Depliegue en local
 
-1. Requisitos: Docker y docker-compose 
+1. Requisitos: Docker y docker-compose
 2. Abrir el proyecto en una consola o terminal navegar a la ruta ```/ms_products/deployment```
 3. Ejecutar el comando
    ```
    docker-compose up -d 
    ```
-4. Validar que los contenedores ms-products y db-products esten levantados con el comando 
+4. Validar que los contenedores ms-products y db-products esten levantados con el comando
    ```
    docker ps 
    ```
@@ -21,3 +21,7 @@ Proyecto materia Integracion Continua B01 Poli
 
 1. Jesús Manuel Lopez Mercado - 100317193
 2. Jorge Luis Velásquez Venegas - 100280146
+3. Millerlandy Becerra Chavez - 100321912
+4. Yair Andrey Panqueva Prieto - 100252831
+5. Laura Camila Ortiz Fajardo - 1019147184
+6. Andres Felipe Pineda Obando - 100290906
