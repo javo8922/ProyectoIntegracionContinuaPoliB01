@@ -40,14 +40,6 @@ public class GlobalHandlerError {
                         errorResponse.getErrors())));
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Mono<ResponseEntity<ErrorResponse>> handleIllegalArgumentException(IllegalArgumentException e) {
-        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(
-                        HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), e.getMessage())));
-    }
-
     @ExceptionHandler(ResponseStatusException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Mono<ResponseEntity<ErrorResponse>> handleNotFoundRouteException(ResponseStatusException e) {
@@ -55,12 +47,4 @@ public class GlobalHandlerError {
                 .body(new ErrorResponse(
                         HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.name(), e.getMessage())));
     }
-//
-//    @ExceptionHandler(Error400Exception.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public Mono<ResponseEntity<ErrorResponse>> handleError400Exception(Error400Exception e) {
-//        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(new ErrorResponse(
-//                        HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.name(), e.getMessage())));
-//    }
 }
