@@ -5,3 +5,13 @@ spring:
     url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+springdoc:
+  swagger-ui:
+    path: /product-documentation/swagger-ui.html
+  api-docs:
+    path: /product-api-docs
+  packages-to-scan: co.com.poli.products
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  webjars:
+    prefix:
